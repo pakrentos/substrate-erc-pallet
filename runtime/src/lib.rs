@@ -43,6 +43,7 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
+pub use pallet_erc;
 /// Import the template pallet.
 pub use pallet_template;
 
@@ -265,6 +266,16 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+parameter_types! {
+	pub const KeyLimit: u32 = 10;
+}
+
+impl pallet_erc::Config for Runtime {
+	type Balance = Balance;
+	type Event = Event;
+	type KeyLimit = KeyLimit;
+}
+
 /// Configure the pallet-template in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
@@ -287,6 +298,7 @@ construct_runtime!(
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template,
+		ERC20: pallet_erc
 	}
 );
 
